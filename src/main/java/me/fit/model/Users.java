@@ -22,27 +22,27 @@ public class Users {
 	public static final String GET_USER_BY_NAME = "getUserByName";
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-	
-	private Long idUser;
+
+	private Long id;
 	private String name;
 	private String lastName;
 	private String jmbg;
 	private String email;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "users_id")
 	private Set<Phone> phones;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private Set<LoanFilms> loanFilms;
 
-	public Long getIdUser() {
-		return idUser;
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdUser(Long idUser) {
-		this.idUser = idUser;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -84,7 +84,6 @@ public class Users {
 	public void setPhones(Set<Phone> phones) {
 		this.phones = phones;
 	}
-	
 
 	public Set<LoanFilms> getLoanFilms() {
 		return loanFilms;
@@ -98,7 +97,7 @@ public class Users {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((idUser == null) ? 0 : idUser.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		return result;
@@ -113,10 +112,10 @@ public class Users {
 		if (getClass() != obj.getClass())
 			return false;
 		Users other = (Users) obj;
-		if (idUser == null) {
-			if (other.idUser != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!idUser.equals(other.idUser))
+		} else if (!id.equals(other.id))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -133,10 +132,8 @@ public class Users {
 
 	@Override
 	public String toString() {
-		return "Users [idUser=" + idUser + ", name=" + name + ", lastName=" + lastName + ", jmbg=" + jmbg + ", email="
+		return "Users [idUser=" + id + ", name=" + name + ", lastName=" + lastName + ", jmbg=" + jmbg + ", email="
 				+ email + ", phones=" + phones + ", loanFilms=" + loanFilms + "]";
 	}
-
-	
 
 }

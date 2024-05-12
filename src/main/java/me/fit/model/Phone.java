@@ -12,7 +12,7 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 
 @Entity
-@NamedQueries({ @NamedQuery(name = Phone.GET_ALL_FOR_USER, query = "SELECT p from Phone p WHERE p.users.id = :id") })
+@NamedQueries({ @NamedQuery(name = Phone.GET_ALL_FOR_USER, query = "SELECT p from Phone p WHERE p.user.id = :id") })
 public class Phone {
 
 	public static final String GET_ALL_FOR_USER = "getAllPhonesForUser";

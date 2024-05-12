@@ -45,9 +45,6 @@ public class Film {
 	private Set<LoanFilms> loanFilms = new HashSet<>();
 
 
-	@JoinColumn(name = "genre_id")
-	private Genre genre;
-
 	public Long getId() {
 		return id;
 	}
@@ -88,16 +85,6 @@ public class Film {
 		this.director = director;
 	}
 
-	public Genre getGenre() {
-		return genre;
-	}
-
-	public void setGenre(Genre genre) {
-		this.genre = genre;
-	}
-	
-
-
 	public Set<Genre> getGenres() {
 		return genres;
 	}
@@ -117,8 +104,9 @@ public class Film {
 	@Override
 	public String toString() {
 		return "Film [id=" + id + ", name=" + name + ", duration=" + duration + ", quantity=" + quantity + ", director="
-				+ director + ", genres=" + genres + ", loanFilms=" + loanFilms + ", genre=" + genre + "]";
+				+ director + ", genres=" + genres + ", loanFilms=" + loanFilms + "]";
 	}
 
+	
 	
 }
