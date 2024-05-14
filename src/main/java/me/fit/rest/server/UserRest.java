@@ -50,7 +50,7 @@ public class UserRest {
 
 	@DELETE
 	@Path("/deleteUser/{userId}")
-	@Operation(summary = "Izbrisi korisnika preko ID-a", description = "Brise korisnika na osnovu njegovog ID-a")
+	@Operation(summary = "Izbrisi korisnika sa tim ID-jem", description = "Brise korisnika na osnovu njegovog ID-a")
 	public Response deleteUser(@PathParam("userId") Long userId) {
 		try {
 			userService.deleteUserById(userId);

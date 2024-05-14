@@ -32,4 +32,13 @@ public class GenreService {
 		return genres;
 	}
 	
+	@Transactional
+	public void deleteGenreById(Long genreId) throws GenreException{
+		Genre genre = eManager.find(Genre.class, genreId);
+		if(genre == null) {
+			throw new GenreException("Zanr sa ID-jem: " + genreId + " nije pronadjen");
+		}
+		eManager.remove(genre);
+	}
+	
 }

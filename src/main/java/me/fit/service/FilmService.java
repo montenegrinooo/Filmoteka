@@ -55,4 +55,14 @@ public class FilmService {
 		List<Film> films = eManager.createNamedQuery(Film.GET_ALL_FILMS, Film.class).getResultList();
 		return films;
 	}
+
+	@Transactional
+	public void deleteFilmById(Long filmId) throws FilmException {
+		Film film = eManager.find(Film.class, filmId);
+		if (film == null) {
+			throw new FilmException("Film sa ID-jem: " + filmId + " nije pronadjen");
+		}
+		eManager.remove(film);
+	}
+
 }

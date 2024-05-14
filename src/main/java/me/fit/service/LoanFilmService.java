@@ -51,4 +51,13 @@ public class LoanFilmService {
 		return loanFilms;
 	}
 
+	@Transactional
+	public void deleteLoanFilmById(Long loanFilmId) throws LoanFilmException {
+		LoanFilms loanFilm = eManager.find(LoanFilms.class, loanFilmId);
+		if (loanFilm == null) {
+			throw new LoanFilmException("Iznajmljeni film sa ID-jem " + loanFilmId + " nije pronadjen");
+		}
+		eManager.remove(loanFilm);
+	}
+
 }

@@ -7,9 +7,11 @@ import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -41,13 +43,26 @@ public class LoanFilmRest {
 		}
 
 	}
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/getAllLoanFilms")
 	public Response getAllLoanFilms() {
 		List<LoanFilms> loanFilms = loanFilmService.getAllLoanFilms();
 		return Response.ok().entity(loanFilms).build();
+	}
+
+	@DELETE
+	@Path("/deleteLoanFilm/{loanFilmId}")
+	@Operation(summary = "Izbrisi iznajmljeni film sa tim ID-jem ", description = "Brise iznajmljeni film na osnovu njegovog ID-a")
+	public Response deleteLoanFilm(@PathParam("loanFilmId") Long loanFilmId) {
+		try {
+			loanFilmService.deleteLoanFilmById(loanFilmId);
+			return Response.status(Status.OK).build();
+		} catch (Exception e) {
+			return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
+		}
+
 	}
 
 }

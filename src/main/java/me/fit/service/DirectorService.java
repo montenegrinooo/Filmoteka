@@ -15,21 +15,31 @@ public class DirectorService {
 
 	@Inject
 	private EntityManager eManager;
-	
+
 	@Transactional
-	public Director createDirector(Director d) throws DirectorException{
+	public Director createDirector(Director d) throws DirectorException {
 		List<Director> directors = getAllDirectors();
-		
-		if(directors.contains(d)) {
+
+		if (directors.contains(d)) {
 			throw new DirectorException(DirectorStatus.EXISTS.getLabel());
 		}
-		
+
 		return eManager.merge(d);
 	}
-	
+
 	@Transactional
-	public List<Director> getAllDirectors(){
-		List<Director> directors = eManager.createNamedQuery(Director.GET_ALL_DIRECTORS, Director.class).getResultList();
+	public List<Director> getAllDirectors() {
+		List<Director> directors = eManager.createNamedQuery(Director.GET_ALL_DIRECTORS, Director.class)
+				.getResultList();
 		return directors;
+	}
+
+	@Transactional
+	public void deleteDirectorById(Long directorId) throws DirectorException {
+		Director director = eManager.find(Director.class, directorId);
+		if (director == null) {
+			throw new DirectorException("Direktor sa ID-jem " + directorId + " nije pronadjen.");
+		}
+		eManager.remove(director);
 	}
 }
