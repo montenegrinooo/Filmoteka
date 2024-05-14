@@ -59,4 +59,13 @@ public class UserService {
 		return users;
 	}
 
+	@Transactional
+	public void deleteUserById(Long userId) throws UserException{
+		Users user = eManager.find(Users.class, userId);
+		if(user==null) {
+			throw new UserException("User sa tim id-jem " + userId + " nije pronadjen");
+		}
+		eManager.remove(user);
+	}
+
 }

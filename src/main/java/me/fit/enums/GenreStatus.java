@@ -2,7 +2,7 @@ package me.fit.enums;
 
 public enum GenreStatus {
 	
-	EXISTS("Genre already exists");
+	EXISTS("Zanr vec postoji");
 	
 	private String label;
 

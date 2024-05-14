@@ -2,7 +2,7 @@ package me.fit.enums;
 
 public enum DirectorStatus {
 
-	EXISTS("Director already exists");
+	EXISTS("Reziser vec postoji");
 
 	private String label;
 

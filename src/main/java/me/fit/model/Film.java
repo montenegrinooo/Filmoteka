@@ -38,12 +38,12 @@ public class Film {
 	@JoinColumn(name = "director_id")
 	private Director director;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinTable(name = "Film_genre", joinColumns = { @JoinColumn(name = "film_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "genre_id") })
 	Set<Genre> genres = new HashSet<>();
 
-	@OneToMany(mappedBy = "film")
+	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<LoanFilms> loanFilms = new HashSet<>();
 

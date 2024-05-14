@@ -2,7 +2,7 @@ package me.fit.enums;
 
 public enum UserStatus {
 
-	EXISTS("User already exists");
+	EXISTS("Korisnik vec postoji");
 	
 	private String label;
 

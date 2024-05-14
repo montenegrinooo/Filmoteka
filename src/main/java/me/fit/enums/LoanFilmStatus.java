@@ -2,7 +2,7 @@ package me.fit.enums;
 
 public enum LoanFilmStatus {
 
-	EXISTS("Loan film already exists");
+	EXISTS("Iznajmljeni film vec postoji");
 
 	private String label;
 
