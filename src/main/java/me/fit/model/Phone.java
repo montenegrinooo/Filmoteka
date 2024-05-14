@@ -12,10 +12,10 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 
 @Entity
-@NamedQueries({ @NamedQuery(name = Phone.GET_ALL_FOR_USER, query = "SELECT p from Phone p WHERE p.user.id = :id") })
+@NamedQueries({ @NamedQuery(name = Phone.GET_ALL_PHONES_FOR_USER, query = "SELECT p from Phone p WHERE p.user.id = :id") })
 public class Phone {
 
-	public static final String GET_ALL_FOR_USER = "getAllPhonesForUser";
+	public static final String GET_ALL_PHONES_FOR_USER = "getAllPhonesForUser";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "phone_seq")
@@ -23,6 +23,7 @@ public class Phone {
 	private String number;
 
 	@ManyToOne
+	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private Users user;
 	
@@ -53,6 +54,8 @@ public class Phone {
 	public void setNumber(String number) {
 		this.number = number;
 	}
+	
+	
 
 	@Override
 	public String toString() {

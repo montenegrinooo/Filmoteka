@@ -1,6 +1,10 @@
 package me.fit.model;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @NamedQueries({ @NamedQuery(name = Director.GET_ALL_DIRECTORS, query = "Select d from Director d") })
@@ -19,6 +24,11 @@ public class Director {
 	private String lastName;
 
 	public static final String GET_ALL_DIRECTORS = "getAllDirectors";
+	
+
+	@OneToMany(mappedBy = "director")
+	@JsonIgnore
+	private Set<Film> films = new HashSet<>();
 
 	public Long getId() {
 		return id;

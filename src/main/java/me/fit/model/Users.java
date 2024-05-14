@@ -2,6 +2,8 @@ package me.fit.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,12 +31,13 @@ public class Users {
 	private String jmbg;
 	private String email;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "users_id")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
 	private Set<Phone> phones;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private Set<LoanFilms> loanFilms;
 
 	public Long getId() {

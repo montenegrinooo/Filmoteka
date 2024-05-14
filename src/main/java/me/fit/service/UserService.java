@@ -42,7 +42,7 @@ public class UserService {
 
 	@Transactional
 	public List<Phone> getAllForUsers(Users u) {
-		return eManager.createNamedQuery(Phone.GET_ALL_FOR_USER, Phone.class).setParameter("id", u.getId())
+		return eManager.createNamedQuery(Phone.GET_ALL_PHONES_FOR_USER, Phone.class).setParameter("id", u.getId())
 				.getResultList();
 	}
 

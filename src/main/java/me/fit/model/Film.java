@@ -4,8 +4,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,11 +20,9 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 
-
 @Entity
-@NamedQueries({@NamedQuery(name = Film.GET_ALL_FILMS, query  = "Select f from Film f")})
+@NamedQueries({ @NamedQuery(name = Film.GET_ALL_FILMS, query = "Select f from Film f") })
 public class Film {
-
 
 	public static final String GET_ALL_FILMS = "getAllFilms";
 	@Id
@@ -31,19 +32,20 @@ public class Film {
 	private String name;
 	private double duration;
 	private int quantity;
+	private double pricePerDay;
 
 	@ManyToOne
 	@JoinColumn(name = "director_id")
 	private Director director;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
 	@JoinTable(name = "Film_genre", joinColumns = { @JoinColumn(name = "film_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "genre_id") })
 	Set<Genre> genres = new HashSet<>();
-	
-	@OneToMany(mappedBy = "film")
-	private Set<LoanFilms> loanFilms = new HashSet<>();
 
+	@OneToMany(mappedBy = "film")
+	@JsonIgnore
+	private Set<LoanFilms> loanFilms = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -107,6 +109,4 @@ public class Film {
 				+ director + ", genres=" + genres + ", loanFilms=" + loanFilms + "]";
 	}
 
-	
-	
 }
