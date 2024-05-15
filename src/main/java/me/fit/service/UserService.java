@@ -60,12 +60,22 @@ public class UserService {
 	}
 
 	@Transactional
-	public void deleteUserById(Long userId) throws UserException{
+	public void deleteUserById(Long userId) throws UserException {
 		Users user = eManager.find(Users.class, userId);
-		if(user==null) {
+		if (user == null) {
 			throw new UserException("User sa ID-jem: " + userId + " nije pronadjen");
 		}
 		eManager.remove(user);
+	}
+
+	@Transactional
+	public Users updateUserEmail(Long userId, String newEmail) throws UserException {
+		Users user = eManager.find(Users.class, userId);
+		if (user == null) {
+			throw new UserException("Korisnik sa ID-jem " + userId + " nije pronadjen.");
+		}
+		user.setEmail(newEmail);
+		return eManager.merge(user);
 	}
 
 }

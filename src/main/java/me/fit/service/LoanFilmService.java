@@ -32,6 +32,11 @@ public class LoanFilmService {
 		if (film == null) {
 			throw new FilmException("Film sa id-jem " + filmId + " nije pronadjen");
 		}
+		
+		if (film.getQuantity() <= 0) {
+			throw new LoanFilmException("Nemamo vise filmova sa ID-jem " + filmId + " u ponudi");
+		}
+		film.setQuantity(film.getQuantity() - 1);
 
 		l.setFilm(film);
 		l.setUser(user);

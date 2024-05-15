@@ -65,4 +65,21 @@ public class FilmService {
 		eManager.remove(film);
 	}
 
+	@Transactional
+	public void updateFilmQuantityByName(String filmName, int quantityToAdd) throws FilmException {
+		try {
+			Film film = eManager.createNamedQuery(Film.GET_FILM_BY_NAME, Film.class).setParameter("name", filmName)
+					.getSingleResult();
+			if (film != null) {
+				film.setQuantity(film.getQuantity() + quantityToAdd);
+				eManager.merge(film);
+			} else {
+				throw new FilmException("Nema filma sa imenom: " + filmName);
+			}
+		} catch (Exception e) {
+			throw new FilmException("Greska prilikom azuriranja broja filmova: " + e.getMessage());
+		}
+
+	}
+
 }

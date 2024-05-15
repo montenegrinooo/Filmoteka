@@ -6,10 +6,12 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -59,4 +61,32 @@ public class UserRest {
 			return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
 		}
 	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/getUsersByName/{name}")
+	public Response getUserByName(@PathParam("name") String name) {
+		if (name == null || name.isEmpty()) {
+			return Response.status(Status.BAD_REQUEST).entity("Ime je obavezzno").build();
+		}
+
+		List<Users> users = userService.getUsersByName(name);
+		if (users.isEmpty()) {
+			return Response.status(Status.NOT_FOUND).entity("Nije pronadjen korisnik sa tim imenom").build();
+		}
+		return Response.ok().entity(users).build();
+	}
+
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/updateUserEmail/{userId}/{newEmail}")
+	public Response updateUserEmail(@PathParam("userId") Long userId, @PathParam("newEmail") String newEmail) {
+		try {
+			userService.updateUserEmail(userId, newEmail);
+			return Response.status(Status.OK).build();
+		} catch (UserException e) {
+			return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
+		}
+	}
+
 }

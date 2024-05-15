@@ -10,6 +10,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -70,6 +71,22 @@ public class FilmRest {
 			return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
 		}
 
+	}
+
+	@PUT
+	@Path("/updateBookQuantityByName/{name}/{quantityToAdd}")
+	@Operation(summary = "Azuriraj kolicinu filmova po imenu", description = "Dodaj kolicinu filmova na vec postojecu kolicinu")
+	public Response updateFilmQuantityByName(@PathParam("name") String name,
+			@PathParam("quantityToAdd") int quantityToAdd) {
+		try {
+			filmService.updateFilmQuantityByName(name, quantityToAdd);
+			return Response.status(Status.OK).build();
+		} catch (FilmException e) {
+			return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
+		} catch (Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity("Greska prilikom azuriranja kolicine filmova: " + e.getMessage()).build();
+		}
 	}
 
 }
