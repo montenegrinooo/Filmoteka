@@ -1,6 +1,10 @@
 package me.fit.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,8 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+
 
 @Entity
 @NamedQueries({ @NamedQuery(name = LoanFilms.GET_ALL_LOAN_FILMS, query = "Select lf from LoanFilms lf") })
@@ -32,9 +35,12 @@ public class LoanFilms {
 	@JoinColumn(name = "user_id")
 	private Users user;
 
+	@JsonIgnore
 	private Date loanDate;
 	private Date returnDate;
-	private boolean returned;
+	@JsonIgnore
+	private boolean returned = false;
+	@JsonIgnore
 	private double price;
 
 	public Long getId() {
@@ -97,6 +103,18 @@ public class LoanFilms {
 	public String toString() {
 		return "LoanFilms [id=" + id + ", film=" + film + ", user=" + user + ", loanDate=" + loanDate + ", returnDate="
 				+ returnDate + ", returned=" + returned + ", price=" + price + "]";
+	}
+
+	public void calculatorTotalPrice() {
+		LocalDate startDate = loanDate.toLocalDate();
+		LocalDate endDate;
+		if (returnDate != null) {
+			endDate = returnDate.toLocalDate();
+		} else {
+			endDate = LocalDate.now();
+		}
+		Long days = ChronoUnit.DAYS.between(startDate, endDate);
+		this.price = film.getPricePerDay() * days;
 	}
 
 }

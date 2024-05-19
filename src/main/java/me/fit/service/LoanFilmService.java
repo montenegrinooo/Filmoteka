@@ -1,7 +1,10 @@
 package me.fit.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
+import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -32,7 +35,7 @@ public class LoanFilmService {
 		if (film == null) {
 			throw new FilmException("Film sa id-jem " + filmId + " nije pronadjen");
 		}
-		
+
 		if (film.getQuantity() <= 0) {
 			throw new LoanFilmException("Nemamo vise filmova sa ID-jem " + filmId + " u ponudi");
 		}
@@ -40,6 +43,9 @@ public class LoanFilmService {
 
 		l.setFilm(film);
 		l.setUser(user);
+
+		l.setLoanDate(Date.valueOf(LocalDate.now()));
+		l.calculatorTotalPrice();
 
 		List<LoanFilms> loanFilms = getAllLoanFilms();
 
@@ -63,6 +69,21 @@ public class LoanFilmService {
 			throw new LoanFilmException("Iznajmljeni film sa ID-jem " + loanFilmId + " nije pronadjen");
 		}
 		eManager.remove(loanFilm);
+	}
+
+	@Scheduled(cron = "0 0 0 * * ?")
+	@Transactional
+	public void checkAndUpdateReturnStatus() {
+		List<LoanFilms> loanFilms = getAllLoanFilms();
+		LocalDate today = LocalDate.now();
+
+		for (LoanFilms loanFilm : loanFilms) {
+			if (loanFilm.getReturnDate() != null && loanFilm.getReturnDate().toLocalDate().isBefore(today)
+					&& !loanFilm.isReturned()) {
+				loanFilm.setReturned(true);
+				eManager.merge(loanFilm);
+			}
+		}
 	}
 
 }

@@ -105,6 +105,14 @@ public class Film {
 		this.loanFilms = loanFilms;
 	}
 
+	public double getPricePerDay() {
+		return pricePerDay;
+	}
+
+	public void setPricePerDay(double pricePerDay) {
+		this.pricePerDay = pricePerDay;
+	}
+
 	@Override
 	public String toString() {
 		return "Film [id=" + id + ", name=" + name + ", duration=" + duration + ", quantity=" + quantity + ", director="
