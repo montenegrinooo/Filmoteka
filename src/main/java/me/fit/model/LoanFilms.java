@@ -107,12 +107,8 @@ public class LoanFilms {
 
 	public void calculatorTotalPrice() {
 		LocalDate startDate = loanDate.toLocalDate();
-		LocalDate endDate;
-		if (returnDate != null) {
-			endDate = returnDate.toLocalDate();
-		} else {
-			endDate = LocalDate.now();
-		}
+		LocalDate endDate = returnDate.toLocalDate();
+		
 		Long days = ChronoUnit.DAYS.between(startDate, endDate);
 		this.price = film.getPricePerDay() * days;
 	}

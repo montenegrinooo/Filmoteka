@@ -1,8 +1,10 @@
 package me.fit.rest.server;
 
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import jakarta.inject.Inject;
@@ -18,7 +20,9 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import me.fit.exception.UserException;
+import me.fit.model.IpLog;
 import me.fit.model.Users;
+import me.fit.rest.client.IpClient;
 import me.fit.service.UserService;
 
 @Path("/api/user")
@@ -27,6 +31,10 @@ public class UserRest {
 	@Inject
 	private UserService userService;
 
+	@Inject
+	@RestClient
+	private IpClient ipClient;
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/createUser")
@@ -35,7 +43,9 @@ public class UserRest {
 		Users u = null;
 
 		try {
-			u = userService.createUser(user);
+			IpLog ipLog = ipClient.getIp();
+			ipLog.setCreatedDate(new Date());
+			u = userService.createUser(user,ipLog);
 			return Response.status(Status.CREATED).entity(u).build();
 		} catch (UserException e) {
 			return Response.status(Status.CONFLICT).entity(e.getMessage()).build();

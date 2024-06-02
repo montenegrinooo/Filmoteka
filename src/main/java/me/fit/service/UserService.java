@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import me.fit.enums.UserStatus;
 import me.fit.exception.UserException;
+import me.fit.model.IpLog;
 import me.fit.model.Phone;
 import me.fit.model.Users;
 
@@ -19,12 +20,13 @@ public class UserService {
 	private EntityManager eManager;
 
 	@Transactional
-	public Users createUser(Users u) throws UserException {
+	public Users createUser(Users u, IpLog ipLog) throws UserException {
 		List<Users> users = getAllUsers();
 
 		if (users.contains(u)) {
 			throw new UserException(UserStatus.EXISTS.getLabel());
 		}
+		u.setIpLog(ipLog);
 		return eManager.merge(u);
 	}
 

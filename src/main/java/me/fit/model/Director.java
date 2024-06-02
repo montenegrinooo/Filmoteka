@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +19,7 @@ import jakarta.persistence.OneToMany;
 @NamedQueries({ @NamedQuery(name = Director.GET_ALL_DIRECTORS, query = "Select d from Director d") })
 public class Director {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "director_id")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "director_seq")
 	private Long id;
 	private String name;
 	private String lastName;
@@ -26,7 +27,7 @@ public class Director {
 	public static final String GET_ALL_DIRECTORS = "getAllDirectors";
 	
 
-	@OneToMany(mappedBy = "director")
+	@OneToMany(mappedBy = "director", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Film> films = new HashSet<>();
 

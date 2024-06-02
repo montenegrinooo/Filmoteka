@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @NamedQueries({ @NamedQuery(name = Users.GET_ALL_USERS, query = "Select u from Users u"),
@@ -39,6 +40,19 @@ public class Users {
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private Set<LoanFilms> loanFilms;
+	
+	@OneToOne(cascade= {CascadeType.ALL})
+	@JsonIgnore
+	private IpLog ipLog;
+	
+
+	public IpLog getIpLog() {
+		return ipLog;
+	}
+
+	public void setIpLog(IpLog ipLog) {
+		this.ipLog = ipLog;
+	}
 
 	public Long getId() {
 		return id;

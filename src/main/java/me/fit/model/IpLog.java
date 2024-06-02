@@ -21,9 +21,8 @@ public class IpLog {
 		super();
 	}
 
-	public IpLog(Long id, String ipString, String ipType, Date createdDate) {
+	public IpLog(String ipString, String ipType, Date createdDate) {
 		super();
-		this.id = id;
 		this.ipString = ipString;
 		this.ipType = ipType;
 		this.createdDate = createdDate;
