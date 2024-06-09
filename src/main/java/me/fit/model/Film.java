@@ -1,7 +1,6 @@
 package me.fit.model;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,11 +42,16 @@ public class Film {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinTable(name = "Film_genre", joinColumns = { @JoinColumn(name = "film_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "genre_id") })
+	@JsonIgnore
 	Set<Genre> genres = new HashSet<>();
 
 	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<LoanFilms> loanFilms = new HashSet<>();
+
+	@ManyToOne
+	@JoinColumn(name = "actor_id")
+	private Actor actor;
 
 	public Long getId() {
 		return id;
@@ -111,6 +115,14 @@ public class Film {
 
 	public void setPricePerDay(double pricePerDay) {
 		this.pricePerDay = pricePerDay;
+	}
+
+	public Actor getActor() {
+		return actor;
+	}
+
+	public void setActor(Actor actor) {
+		this.actor = actor;
 	}
 
 	@Override

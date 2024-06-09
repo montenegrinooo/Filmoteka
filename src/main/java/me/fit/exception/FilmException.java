@@ -1,9 +1,9 @@
 package me.fit.exception;
 
-public class FilmException extends Exception{
-	
+public class FilmException extends Exception {
+
 	private String message;
-	
+
 	public FilmException(String message) {
 		super(message);
 		this.message = message;
@@ -16,7 +16,5 @@ public class FilmException extends Exception{
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
 
 }

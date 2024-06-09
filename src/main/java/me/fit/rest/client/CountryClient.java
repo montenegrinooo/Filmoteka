@@ -11,7 +11,7 @@ import me.fit.model.rest.client.Country;
 @Path("/api/v3")
 @RegisterRestClient
 public interface CountryClient {
-	
+
 	@GET
 	@Path("/AvailableCountries")
 	List<Country> getAll();

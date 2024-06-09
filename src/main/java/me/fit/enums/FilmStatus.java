@@ -1,9 +1,9 @@
 package me.fit.enums;
 
 public enum FilmStatus {
-	
+
 	EXISTS("Film vec postoji");
-	
+
 	private String label;
 
 	private FilmStatus(String label) {

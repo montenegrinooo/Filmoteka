@@ -12,6 +12,7 @@ import me.fit.enums.FilmStatus;
 import me.fit.exception.DirectorException;
 import me.fit.exception.FilmException;
 import me.fit.exception.GenreException;
+import me.fit.model.Actor;
 import me.fit.model.Director;
 import me.fit.model.Film;
 import me.fit.model.Genre;
@@ -23,12 +24,16 @@ public class FilmService {
 	private EntityManager eManager;
 
 	@Transactional
-	public Film createFilm(Film f, Long directorId, List<Long> genreIDs)
+	public Film createFilm(Film f, Long directorId, List<Long> genreIDs, Long actorId)
 			throws FilmException, DirectorException, GenreException {
 
 		Director director = eManager.find(Director.class, directorId);
 		if (director == null) {
 			throw new DirectorException("Direktor sa tim id-jem " + directorId + " nije pronadjen");
+		}
+		Actor actor = eManager.find(Actor.class, actorId);
+		if (actor == null) {
+			throw new DirectorException("Glumac sa tim id-jem " + actorId + " nije pronadjen");
 		}
 
 		Set<Genre> genres = new HashSet<>();
@@ -40,6 +45,7 @@ public class FilmService {
 			genres.add(genre);
 		}
 		f.setDirector(director);
+		f.setActor(actor);
 		f.setGenres(genres);
 
 		List<Film> films = getAllFilms();

@@ -1,7 +1,5 @@
 package me.fit.model.rest.client;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;

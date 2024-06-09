@@ -37,9 +37,10 @@ public class FilmRest {
 		try {
 			Film f = filmRequest.getFilm();
 			Long directorId = filmRequest.getDirectorId();
+			Long actorId = filmRequest.getActorId();
 
 			List<Long> genreIDs = filmRequest.getGenreIDs();
-			Film createdFilm = filmService.createFilm(f, directorId, genreIDs);
+			Film createdFilm = filmService.createFilm(f, directorId, genreIDs, actorId);
 
 			return Response.ok().entity(createdFilm).build();
 
@@ -74,7 +75,7 @@ public class FilmRest {
 	}
 
 	@PUT
-	@Path("/updateBookQuantityByName/{name}/{quantityToAdd}")
+	@Path("/updateFilmQuantityByName/{name}/{quantityToAdd}")
 	@Operation(summary = "Azuriraj kolicinu filmova po imenu", description = "Dodaj kolicinu filmova na vec postojecu kolicinu")
 	public Response updateFilmQuantityByName(@PathParam("name") String name,
 			@PathParam("quantityToAdd") int quantityToAdd) {

@@ -1,14 +1,18 @@
 package me.fit.rest.server;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse.Status;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -21,7 +25,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import me.fit.exception.UserException;
 import me.fit.model.IpLog;
+import me.fit.model.Phone;
 import me.fit.model.Users;
+import me.fit.multipart.MultipartRequest;
 import me.fit.rest.client.IpClient;
 import me.fit.service.UserService;
 
@@ -34,21 +40,38 @@ public class UserRest {
 	@Inject
 	@RestClient
 	private IpClient ipClient;
-	
+
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Path("/createUser")
 	@Operation(summary = "Web servis koji kreira novog usera.", description = "User mora biti unikatan.")
-	public Response createUser(Users user) {
-		Users u = null;
+	public Response createUser(MultipartRequest request) {
+		Users u = new Users();
+		u.setName(request.getName());
+		u.setLastName(request.getLastName());
+		u.setEmail(request.getEmail());
+		u.setJmbg(request.getJmbg());
+		FileUpload fileUpload = request.getFile();
+		if (fileUpload == null) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Nedostaje fajl").build();
+		}
+
+		Set<Phone> phones = new HashSet<>();
+		for (String phone : request.getPhones()) {
+			Phone p = new Phone();
+			p.setNumber(phone);
+			phones.add(p);
+		}
+		u.setPhones(phones);
 
 		try {
+			byte[] image = Files.readAllBytes(fileUpload.uploadedFile().toAbsolutePath());
 			IpLog ipLog = ipClient.getIp();
 			ipLog.setCreatedDate(new Date());
-			u = userService.createUser(user,ipLog);
+			u = userService.createUser(u, ipLog, image);
 			return Response.status(Status.CREATED).entity(u).build();
-		} catch (UserException e) {
-			return Response.status(Status.CONFLICT).entity(e.getMessage()).build();
+		} catch (UserException | IOException e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Greska prilikom postavljanja fajla").build();
 		}
 	}
 

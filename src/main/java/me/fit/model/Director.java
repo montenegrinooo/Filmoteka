@@ -1,7 +1,6 @@
 package me.fit.model;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,7 +24,6 @@ public class Director {
 	private String lastName;
 
 	public static final String GET_ALL_DIRECTORS = "getAllDirectors";
-	
 
 	@OneToMany(mappedBy = "director", cascade = CascadeType.ALL)
 	@JsonIgnore

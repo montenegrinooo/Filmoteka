@@ -1,9 +1,9 @@
 package me.fit.enums;
 
 public enum GenreStatus {
-	
+
 	EXISTS("Zanr vec postoji");
-	
+
 	private String label;
 
 	private GenreStatus(String label) {
@@ -17,6 +17,5 @@ public enum GenreStatus {
 	public void setLabel(String label) {
 		this.label = label;
 	}
-
 
 }

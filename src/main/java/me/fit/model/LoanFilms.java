@@ -16,7 +16,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 
-
 @Entity
 @NamedQueries({ @NamedQuery(name = LoanFilms.GET_ALL_LOAN_FILMS, query = "Select lf from LoanFilms lf") })
 public class LoanFilms {
@@ -108,7 +107,7 @@ public class LoanFilms {
 	public void calculatorTotalPrice() {
 		LocalDate startDate = loanDate.toLocalDate();
 		LocalDate endDate = returnDate.toLocalDate();
-		
+
 		Long days = ChronoUnit.DAYS.between(startDate, endDate);
 		this.price = film.getPricePerDay() * days;
 	}

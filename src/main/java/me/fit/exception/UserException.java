@@ -1,9 +1,9 @@
 package me.fit.exception;
 
-public class UserException extends Exception{
+public class UserException extends Exception {
 
 	private String message;
-	
+
 	public UserException(String message) {
 		super(message);
 		this.message = message;
@@ -16,5 +16,5 @@ public class UserException extends Exception{
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+
 }

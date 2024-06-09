@@ -15,30 +15,34 @@ public class GenreService {
 
 	@Inject
 	private EntityManager eManager;
-	
+
 	@Transactional
-	public Genre createGenre(Genre g) throws GenreException{
+	public Genre createGenre(Genre g) throws GenreException {
 		List<Genre> genres = getAllGenres();
-		
-		if(genres.contains(g)) {
+
+		if (genres.contains(g)) {
 			throw new GenreException(GenreStatus.EXISTS.getLabel());
 		}
 		return eManager.merge(g);
 	}
-	
+
 	@Transactional
-	public List<Genre> getAllGenres(){
+	public List<Genre> getAllGenres() {
 		List<Genre> genres = eManager.createNamedQuery(Genre.GET_ALL_GENRES, Genre.class).getResultList();
 		return genres;
 	}
-	
+
 	@Transactional
-	public void deleteGenreById(Long genreId) throws GenreException{
+	public void deleteGenreById(Long genreId) throws GenreException {
 		Genre genre = eManager.find(Genre.class, genreId);
-		if(genre == null) {
+		if (genre == null) {
 			throw new GenreException("Zanr sa ID-jem: " + genreId + " nije pronadjen");
 		}
+		genre.getFilms().forEach(film -> film.getGenres().remove(genre));
+		genre.getFilms().clear();
+		eManager.merge(genre);
+
 		eManager.remove(genre);
 	}
-	
+
 }

@@ -1,10 +1,10 @@
 package me.fit.exception;
 
-public class DirectorException extends Exception {
+public class ActorException extends Exception {
 
 	private String message;
 
-	public DirectorException(String message) {
+	public ActorException(String message) {
 		super(message);
 		this.message = message;
 	}

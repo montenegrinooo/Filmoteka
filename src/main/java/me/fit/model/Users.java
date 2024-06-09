@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
@@ -23,14 +24,16 @@ public class Users {
 
 	public static final String GET_ALL_USERS = "getAllUsers";
 	public static final String GET_USER_BY_NAME = "getUserByName";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-
 	private Long id;
 	private String name;
 	private String lastName;
 	private String jmbg;
 	private String email;
+	@Lob
+	private byte[] image;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
@@ -40,11 +43,10 @@ public class Users {
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private Set<LoanFilms> loanFilms;
-	
-	@OneToOne(cascade= {CascadeType.ALL})
+
+	@OneToOne(cascade = { CascadeType.ALL })
 	@JsonIgnore
 	private IpLog ipLog;
-	
 
 	public IpLog getIpLog() {
 		return ipLog;
@@ -108,6 +110,14 @@ public class Users {
 
 	public void setLoanFilms(Set<LoanFilms> loanFilms) {
 		this.loanFilms = loanFilms;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 	@Override

@@ -30,4 +30,15 @@ public class CountryService {
 		return eManager.createNamedQuery(Country.GET_ALL, Country.class).getResultList();
 	}
 
+	@Transactional
+	public Country getCountryByName(String countryName) {
+		List<Country> countries = eManager.createNamedQuery(Country.GET_ALL, Country.class).getResultList();
+		for (Country country : countries) {
+			if (country.getName().equalsIgnoreCase(countryName)) {
+				return country;
+			}
+		}
+		return null;
+	}
+
 }

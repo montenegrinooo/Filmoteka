@@ -4,12 +4,13 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 
@@ -25,8 +26,9 @@ public class Genre {
 	private String name;
 
 	@ManyToMany(mappedBy = "genres")
+	@JsonIgnore
 	private Set<Film> films = new HashSet<>();
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -42,8 +44,14 @@ public class Genre {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
+	public Set<Film> getFilms() {
+		return films;
+	}
+
+	public void setFilms(Set<Film> films) {
+		this.films = films;
+	}
 
 	@Override
 	public int hashCode() {
@@ -66,7 +74,5 @@ public class Genre {
 	public String toString() {
 		return "Genre [id=" + id + ", name=" + name + ", films=" + films + "]";
 	}
-
-
 
 }

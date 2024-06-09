@@ -1,12 +1,12 @@
 package me.fit.enums;
 
-public enum UserStatus {
+public enum ActorStatus {
 
-	EXISTS("Korisnik vec postoji");
+	EXISTS("Glumac vec postoji");
 
 	private String label;
 
-	private UserStatus(String label) {
+	private ActorStatus(String label) {
 		this.label = label;
 	}
 

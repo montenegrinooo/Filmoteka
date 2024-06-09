@@ -20,13 +20,14 @@ public class UserService {
 	private EntityManager eManager;
 
 	@Transactional
-	public Users createUser(Users u, IpLog ipLog) throws UserException {
+	public Users createUser(Users u, IpLog ipLog, byte[] image) throws UserException {
 		List<Users> users = getAllUsers();
 
 		if (users.contains(u)) {
 			throw new UserException(UserStatus.EXISTS.getLabel());
 		}
 		u.setIpLog(ipLog);
+		u.setImage(image);
 		return eManager.merge(u);
 	}
 
