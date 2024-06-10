@@ -81,6 +81,7 @@ public class LoanFilmService {
 			if (loanFilm.getReturnDate() != null && loanFilm.getReturnDate().toLocalDate().isBefore(today)
 					&& !loanFilm.isReturned()) {
 				loanFilm.setReturned(true);
+				loanFilm.getFilm().setQuantity(loanFilm.getFilm().getQuantity()+1);
 				eManager.merge(loanFilm);
 			}
 		}

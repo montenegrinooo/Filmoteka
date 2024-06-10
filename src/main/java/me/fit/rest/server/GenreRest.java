@@ -4,6 +4,7 @@ import java.util.List;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
+import me.fit.exception.ActorException;
 import me.fit.exception.GenreException;
 import me.fit.model.Genre;
 import me.fit.service.GenreService;
@@ -12,6 +13,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -54,6 +56,18 @@ public class GenreRest {
 	public Response deleteGenre(@PathParam("genreId") Long genreId) {
 		try {
 			genreService.deleteGenreById(genreId);
+			return Response.status(Status.OK).build();
+		} catch (GenreException e) {
+			return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
+		}
+	}
+
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/updateGenre/{genreId}/{newGenre}")
+	public Response updateGenre(@PathParam("genreId") Long genreId, @PathParam("newGenre") String newGenre) {
+		try {
+			genreService.updateGenre(genreId, newGenre);
 			return Response.status(Status.OK).build();
 		} catch (GenreException e) {
 			return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
